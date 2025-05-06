@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="tl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Love Letter with Flying Hearts and Zooming Pictures</title>
+    <style>
+      body {
+        font-family: 'Georgia', serif;
+        background-color: pink;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        position: relative;
+        height: 100vh;
+      }
+
+      .letter-container {
+        width: 80%;
+        max-width: 600px;
+        background-color: white;
+        border-radius: 10px;
+        margin: 50px auto;
+        padding: 30px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        position: relative;
+        z-index: 2;
+      }
+
+      .letter-header h1 {
+        color: #d72a7a;
+        font-size: 2.5em;
+      }
+
+      .letter-body p {
+        font-size: 1.2em;
+        line-height: 1.6;
+        color: #333;
+        margin-bottom: 20px;
+      }
+
+      .letter-footer p {
+        font-size: 1.2em;
+        font-style: italic;
+        color: #d72a7a;
+      }
+
+      .image-container {
+        margin-bottom: 20px;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease;
+        cursor: pointer;
+      }
+
+      /* Main image zoom on click */
+      .image-container img:active {
+        transform: scale(1.2);
+      }
+
+      /* Flying Hearts */
+      .heart {
+        position: absolute;
+        color: #ff4d7a;
+        font-size: 3rem;
+        animation: heartAnimation 6s ease-in-out infinite;
+        opacity: 0;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      @keyframes heartAnimation {
+        0% {
+          transform: translateY(100vh) rotate(0deg);
+          opacity: 0;
+        }
+        50% {
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-100vh) rotate(360deg);
+          opacity: 0;
+        }
+      }
+
+      .heart:nth-child(1) {
+        left: 5%;
+        animation-delay: 0s;
+        animation-duration: 8s;
+      }
+      .heart:nth-child(2) {
+        left: 20%;
+        animation-delay: 2s;
+        animation-duration: 9s;
+      }
+      .heart:nth-child(3) {
+        left: 40%;
+        animation-delay: 4s;
+        animation-duration: 7s;
+      }
+      .heart:nth-child(4) {
+        left: 60%;
+        animation-delay: 1s;
+        animation-duration: 10s;
+      }
+      .heart:nth-child(5) {
+        left: 80%;
+        animation-delay: 3s;
+        animation-duration: 6s;
+      }
+
+      /* Flying Pictures - Malaking pictures */
+      .flying-picture {
+        position: absolute;
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        animation: flyUp 12s linear infinite;
+        opacity: 1;
+        z-index: 10; /* Ensure z-index is high */
+        transition: transform 0.3s ease;
+        cursor: pointer;
+      }
+
+      @keyframes flyUp {
+        0% {
+          transform: translateY(100vh) rotate(0deg);
+        }
+        50% {
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-150vh) rotate(360deg);
+        }
+      }
+
+      /* Positioning the flying pictures across the screen */
+      .pic1 {
+        left: 10%;
+        animation-delay: 1s;
+        animation-duration: 20s;
+      }
+      .pic2 {
+        left: 20%;
+        animation-delay: 2s;
+        animation-duration: 22s;
+      }
+      .pic3 {
+        left: 30%;
+        animation-delay: 3s;
+        animation-duration: 18s;
+      }
+      .pic4 {
+        left: 40%;
+        animation-delay: 4s;
+        animation-duration: 19s;
+      }
+      .pic5 {
+        left: 50%;
+        animation-delay: 5s;
+        animation-duration: 21s;
+      }
+      .pic6 {
+        left: 60%;
+        animation-delay: 6s;
+        animation-duration: 23s;
+      }
+      .pic7 {
+        left: 70%;
+        animation-delay: 7s;
+        animation-duration: 24s;
+      }
+      .pic8 {
+        left: 80%;
+        animation-delay: 8s;
+        animation-duration: 25s;
+      }
+      .pic9 {
+        left: 90%;
+        animation-delay: 9s;
+        animation-duration: 26s;
+      }
+      .pic10 {
+        left: 95%;
+        animation-delay: 10s;
+        animation-duration: 28s;
+      }
+
+      /* Zoomed class for flying pictures */
+      .zoomed {
+        transform: scale(2) !important;
+        z-index: 20; /* Increase z-index when zoomed */
+      }
+
+      /* Modal for image popup */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        justify-content: center;
+        align-items: center;
+      }
+
+      .modal-content {
+        position: relative;
+        max-width: 90%;
+        max-height: 90%;
+        overflow: auto;
+      }
+
+      .modal-content img {
+        width: 100%;
+        max-width: 600px; /* Restrict maximum image width */
+        height: auto;
+        border-radius: 10px;
+        object-fit: contain; /* Ensure the image maintains its aspect ratio */
+      }
+
+      .close {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        color: white;
+        font-size: 3rem;
+        cursor: pointer;
+      }
+
+      /* Responsive */
+      @media screen and (max-width: 600px) {
+        .letter-container {
+          width: 90%;
+          padding: 20px;
+        }
+        .letter-header h1 {
+          font-size: 2em;
+        }
+        .letter-body p {
+          font-size: 1em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Flying Hearts -->
+    <div class="heart">❤️</div>
+    <div class="heart">❤️</div>
+    <div class="heart">❤️</div>
+    <div class="heart">❤️</div>
+    <div class="heart">❤️</div>
+
+    <!-- Flying Pictures -->
+    <img src="IMAGE_URL_1.jpg" alt="Flying Pic 1" class="flying-picture pic1" />
+    <img src="IMAGE_URL_2.jpg" alt="Flying Pic 2" class="flying-picture pic2" />
+    <img src="IMAGE_URL_3.jpg" alt="Flying Pic 4" class="flying-picture pic4" />
+    <img src="IMAGE_URL_5.jpg" alt="Flying Pic 5" class="flying-picture pic5" />
+    <img src="IMAGE_URL_6.jpg" alt="Flying Pic 6" class="flying-picture pic6" />
+    <img src="IMAGE_URL_7.jpg" alt="Flying Pic 7" class="flying-picture pic7" />
+    <img src="IMAGE_URL_8.jpg" alt="Flying Pic 8" class="flying-picture pic8" />
+    <img src="IMAGE_URL_9.jpg" alt="Flying Pic 9" class="flying-picture pic9" />
+    <img
+      src="IMAGE_URL_10.jpg"
+      alt="Flying Pic 10"
+      class="flying-picture pic10"
+    />
+
+    <!-- Modal for larger image -->
+    <div id="imageModal" class="modal">
+      <span class="close" id="closeModal">&times;</span>
+      <div class="modal-content">
+        <img id="modalImage" src="" alt="Clicked Image" />
+      </div>
+    </div>
+
+    <!-- Love Letter -->
+    <div class="letter-container">
+      <div class="image-container">
+        <img src="[MAIN_IMAGE_URL]" alt="Main Picture" />
+      </div>
+      <div class="letter-header">
+        <h1>Mahal kong [Pangalan],</h1>
+      </div>
+      <div class="letter-body">
+        <p>Isang magandang araw sa iyo, ang pinaka espesyal sa aking buhay.</p>
+        <p>
+          Walang katumbas na saya ang nararamdaman ko kapag ikaw ay aking
+          kasama. Sa bawat tawa mo, sa bawat sulyap ng iyong mata, sa bawat
+          salita na nagmumula sa iyong labi, ay nararamdaman ko na ikaw ang
+          aking tadhana.
+        </p>
+        <p>
+          Hindi ko alam kung paano ko masusukat ang pag-ibig ko sa iyo, ngunit
+          sa bawat araw na lumilipas, natututo akong mahalin ka nang higit pa.
+          Ang buhay ko ay puno ng kulay at ligaya dahil sa iyo.
+        </p>
+        <p>
+          Sana'y magpatuloy ang ating paglalakbay magkasama, at sana'y
+          maramdaman mo ang parehong saya at pagmamahal na binibigay mo sa akin.
+        </p>
+        <p>Maghihintay ako ng araw na makakasama kita habang buhay.</p>
+      </div>
+      <div class="letter-footer">
+        <p>Palagi kang iniisip,</p>
+        <p>[Iyong Pangalan]</p>
+      </div>
+    </div>
+
+    <script>
+      // JavaScript para sa zoom on click ng flying pictures and modal pop-up
+      const flyingPics = document.querySelectorAll('.flying-picture');
+      const modal = document.getElementById('imageModal');
+      const modalImage = document.getElementById('modalImage');
+      const closeModal = document.getElementById('closeModal');
+
+      flyingPics.forEach((pic) => {
+        pic.addEventListener('click', () => {
+          // Show modal with the clicked image
+          modal.style.display = 'flex';
+          modalImage.src = pic.src;
+        });
+      });
+
+      // Close the modal when clicking on the "X"
+      closeModal.addEventListener('click', () => {
+        modal.style.display = 'none';
+      });
+
+      // Close the modal if clicked outside of the modal content
+      window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+          modal.style.display = 'none';
+        }
+      });
+    </script>
+  </body>
+</html>
