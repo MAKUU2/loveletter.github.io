@@ -10,9 +10,9 @@
         background-color: pink;
         margin: 0;
         padding: 0;
-        overflow: hidden;
+        overflow-x: hidden;
         position: relative;
-        height: 100vh;
+        min-height: 100vh;
       }
 
       .letter-container {
@@ -58,12 +58,10 @@
         cursor: pointer;
       }
 
-      /* Main image zoom on click */
       .image-container img:active {
         transform: scale(1.2);
       }
 
-      /* Flying Hearts */
       .heart {
         position: absolute;
         color: #ff4d7a;
@@ -114,7 +112,6 @@
         animation-duration: 6s;
       }
 
-      /* Flying Pictures - Malaking pictures */
       .flying-picture {
         position: absolute;
         width: 150px;
@@ -124,7 +121,7 @@
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         animation: flyUp 12s linear infinite;
         opacity: 1;
-        z-index: 10; /* Ensure z-index is high */
+        z-index: 10;
         transition: transform 0.3s ease;
         cursor: pointer;
       }
@@ -141,7 +138,6 @@
         }
       }
 
-      /* Positioning the flying pictures across the screen */
       .pic1 {
         left: 10%;
         animation-delay: 1s;
@@ -193,13 +189,11 @@
         animation-duration: 28s;
       }
 
-      /* Zoomed class for flying pictures */
       .zoomed {
         transform: scale(2) !important;
-        z-index: 20; /* Increase z-index when zoomed */
+        z-index: 20;
       }
 
-      /* Modal for image popup */
       .modal {
         display: none;
         position: fixed;
@@ -222,10 +216,10 @@
 
       .modal-content img {
         width: 100%;
-        max-width: 600px; /* Restrict maximum image width */
+        max-width: 600px;
         height: auto;
         border-radius: 10px;
-        object-fit: contain; /* Ensure the image maintains its aspect ratio */
+        object-fit: contain;
       }
 
       .close {
@@ -237,17 +231,32 @@
         cursor: pointer;
       }
 
-      /* Responsive */
       @media screen and (max-width: 600px) {
         .letter-container {
           width: 90%;
           padding: 20px;
         }
+
         .letter-header h1 {
           font-size: 2em;
         }
+
         .letter-body p {
           font-size: 1em;
+        }
+
+        /* Dagdag responsive tweaks sa mobile */
+        .flying-picture {
+          width: 80px;
+          height: 80px;
+        }
+
+        .heart {
+          font-size: 2rem;
+        }
+
+        .modal-content img {
+          max-width: 90%;
         }
       }
     </style>
@@ -323,9 +332,7 @@
         <p>MARKY BOY</p>
       </div>
     </div>
-
     <script>
-      // JavaScript para sa zoom on click ng flying pictures and modal pop-up
       const flyingPics = document.querySelectorAll('.flying-picture');
       const modal = document.getElementById('imageModal');
       const modalImage = document.getElementById('modalImage');
@@ -333,18 +340,15 @@
 
       flyingPics.forEach((pic) => {
         pic.addEventListener('click', () => {
-          // Show modal with the clicked image
           modal.style.display = 'flex';
           modalImage.src = pic.src;
         });
       });
 
-      // Close the modal when clicking on the "X"
       closeModal.addEventListener('click', () => {
         modal.style.display = 'none';
       });
 
-      // Close the modal if clicked outside of the modal content
       window.addEventListener('click', (event) => {
         if (event.target === modal) {
           modal.style.display = 'none';
